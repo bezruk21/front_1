@@ -18,53 +18,23 @@ const menuOpen = ref(false);
       <button class="btn">Контакти</button>
       <button class="btn">Про нас</button>
     </div>
+
+    <div v-if="menuOpen" class="menu">
+      <a href="#cats">Коти</a>
+      <a href="#dogs">Собаки</a>
+    </div>
   </header>
 </template>
 
 <style scoped>
-.navbar {
-  padding: 20px;
-  background: #c8b6e2;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.burger {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.burger span {
-  display: block;
-  width: 25px;
-  height: 3px;
+.menu {
   background: white;
-  margin: 4px 0;
+  padding: 10px;
+  margin-top: 10px;
 }
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.right {
-  display: flex;
-  gap: 10px;
-}
-
-.btn {
-  padding: 8px 16px;
-  border: none;
-  background: #4a3f6b;
-  color: white;
+.menu a {
+  display: block;
+  color: black;
+  margin: 5px 0;
 }
 </style>
