@@ -12,7 +12,7 @@ const menuOpen = ref(false);
         <span></span>
         <span></span>
       </button>
-      <div class="logo">🐾 LAKKY</div>
+      <div class="logo">🐾 LAPKY</div>
     </div>
 
     <div class="right">
@@ -21,10 +21,10 @@ const menuOpen = ref(false);
     </div>
 
     <div v-if="menuOpen" class="menu">
-      <a href="#cats" @click="menuOpen = false">🐱 Коти</a>
-      <a href="#dogs" @click="menuOpen = false">🐶 Собаки</a>
-      <a href="#hamsters" @click="menuOpen = false">🐹 Хом'яки</a>
-      <a href="#parrots" @click="menuOpen = false">🦜 Папугаї</a>
+      <a href="#">🐱 Коти</a>
+      <a href="#">🐶 Собаки</a>
+      <a href="#">🐹 Хом'яки</a>
+      <a href="#">🦜 Папугаї</a>
     </div>
 
     <div v-if="menuOpen" class="bg" @click="menuOpen = false"></div>
@@ -37,15 +37,14 @@ const menuOpen = ref(false);
   top: 0;
   left: 0;
   right: 0;
-  width: 100%;
+  padding: 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
-  background: #c8b6e2;
+
+  background: transparent;
   color: white;
-  z-index: 1000;
-  box-sizing: border-box;
+  z-index: 10;
 }
 
 .left {
@@ -58,7 +57,6 @@ const menuOpen = ref(false);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px;
 }
 
 .burger span {
@@ -69,19 +67,14 @@ const menuOpen = ref(false);
   margin: 5px 0;
 }
 
-.burger:hover span {
-  background: #4a3f6b;
-}
-
 .logo {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
 }
 
 .right {
   display: flex;
   gap: 15px;
-  align-items: center;
 }
 
 .btn {
@@ -90,14 +83,14 @@ const menuOpen = ref(false);
   color: white;
   border: none;
   border-radius: 25px;
-  cursor: pointer;
-  font-size: 15px;
   font-weight: bold;
-  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  background: #3a2f5b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
 .menu {
@@ -106,33 +99,21 @@ const menuOpen = ref(false);
   left: 30px;
   background: white;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  z-index: 100;
+  border-radius: 10px;
+  z-index: 11;
 }
 
 .menu a {
   display: block;
   color: #4a3f6b;
-  text-decoration: none;
   padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.menu a:hover {
-  background: #f0f0f0;
-  color: #c8b6e2;
+  text-decoration: none;
 }
 
 .bg {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.3);
-  z-index: 99;
+  z-index: 9;
 }
 </style>
