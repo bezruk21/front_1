@@ -21,6 +21,24 @@ import petImage from '../assets/american-staffordshire-terrier-puppy-table.jpg';
 </template>
 
 <style scoped>
+.paws {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.paw {
+  position: absolute;
+  font-size: 60px;
+  opacity: 0.25;
+}
+
+.p1 { top: 10%; left: 5%; }
+.p2 { top: 15%; left: 25%; font-size: 40px; }
+.p3 { top: 5%; right: 20%; }
+.p4 { bottom: 10%; right: 5%; font-size: 120px; }
+
 .hero {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;
 }
