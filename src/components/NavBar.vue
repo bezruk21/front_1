@@ -1,6 +1,13 @@
 <template>
   <header class="navbar">
-    <div class="logo">🐾 LAKKY</div>
+    <div class="left">
+      <button class="burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="logo">🐾 LAKKY</div>
+    </div>
 
     <div class="right">
       <button class="btn">Контакти</button>
@@ -19,6 +26,26 @@
   align-items: center;
 }
 
+.left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.burger {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.burger span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: white;
+  margin: 4px 0;
+}
+
 .logo {
   font-size: 24px;
   font-weight: bold;
@@ -34,6 +61,5 @@
   border: none;
   background: #4a3f6b;
   color: white;
-  cursor: pointer;
 }
 </style>
