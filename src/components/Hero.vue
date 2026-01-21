@@ -5,6 +5,14 @@ import petImage from '../assets/american-staffordshire-terrier-puppy-table.jpg';
 <template>
   <section class="hero">
     <img :src="petImage" alt="Собака" class="hero-img" />
+
+    <div class="hero-content">
+      <h1>
+        Подаруй дім<br />
+        маленким лапкам
+      </h1>
+      <button>Обрати друга</button>
+    </div>
   </section>
 </template>
 
@@ -24,5 +32,14 @@ import petImage from '../assets/american-staffordshire-terrier-puppy-table.jpg';
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 140px;
+  padding-left: 8%;
+  max-width: 520px;
+  color: white;
 }
 </style>
