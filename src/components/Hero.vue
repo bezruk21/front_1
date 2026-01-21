@@ -7,11 +7,15 @@ import petImage from '../assets/american-staffordshire-terrier-puppy-table.jpg';
     <img :src="petImage" alt="Собака" class="hero-img" />
 
     <div class="hero-content">
-      <h1>
-        Подаруй дім<br />
-        маленким лапкам
-      </h1>
+      <h1>Подаруй дім<br />маленким лапкам</h1>
       <button>Обрати друга</button>
+    </div>
+
+    <div class="paws">
+      <span class="paw p1">🐾</span>
+      <span class="paw p2">🐾</span>
+      <span class="paw p3">🐾</span>
+      <span class="paw p4">🐾</span>
     </div>
   </section>
 </template>
