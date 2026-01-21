@@ -1,7 +1,12 @@
+<script setup>
+import { ref } from 'vue';
+const menuOpen = ref(false);
+</script>
+
 <template>
   <header class="navbar">
     <div class="left">
-      <button class="burger">
+      <button class="burger" @click="menuOpen = !menuOpen">
         <span></span>
         <span></span>
         <span></span>
