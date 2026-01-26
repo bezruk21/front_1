@@ -1,31 +1,19 @@
 <template>
   <section class="cats-page">
-    <div class="container py-4">
-      <h2 class="display-4 fw-bold mb-2">😺 Коти</h2>
-      <p class="lead mb-5 opacity-75">
-        Знайдіть свого ідеального котика! Всі наші хвостаті друзі чекають на люблячу родину.
+    <div class="container">
+      <h2>🐱 Коти</h2>
+      <p class="subtitle">
+        М’які пухнастики шукають дім та люблячих господарів.
       </p>
 
-      <div class="row g-4">
-        <div
-            class="col-12 col-sm-6 col-lg-3"
-            v-for="cat in cats"
-            :key="cat.name"
-        >
-          <div class="card h-100 border-0 shadow-lg cat-card">
-            <img :src="cat.image" class="card-img-top" :alt="cat.name" />
-
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <h3 class="card-title h4 mb-0">{{ cat.name }}</h3>
-                <span class="badge bg-light text-primary border">{{ cat.age }}</span>
-              </div>
-              <p class="card-text text-muted">{{ cat.desc }}</p>
-            </div>
-          </div>
+      <div class="grid">
+        <div class="card" v-for="cat in cats" :key="cat.name">
+          <img :src="cat.image" />
+          <h3>{{ cat.name }}</h3>
+          <span>{{ cat.age }}</span>
+          <p>{{ cat.desc }}</p>
         </div>
       </div>
-
     </div>
   </section>
 </template>
@@ -38,27 +26,27 @@ import cat4 from '../assets/cat4.jpg'
 
 const cats = [
   {
-    name: 'Мурка',
-    age: '2 роки',
-    desc: 'Ласкава кицька, любить гратися та спати на сонечку.',
+    name: 'Мурчик',
+    age: '3 роки',
+    desc: 'Вірний та лагідний кіт, любить теплі місця та обійми.',
     image: cat1
   },
   {
-    name: 'Барсик',
-    age: '1 рік',
-    desc: 'Енергійний котик, обожнює гратися та досліджувати.',
+    name: 'Сімба',
+    age: '2 роки',
+    desc: 'Грайливий та допитливий, добре ладить з дітьми.',
     image: cat2
   },
   {
-    name: 'Сіра',
-    age: '3 роки',
-    desc: 'Спокійна киця, ідеальна для квартири.',
+    name: 'Ліза',
+    age: '1 рік',
+    desc: 'Молода та енергійна кішка, потребує уваги та ігор.',
     image: cat3
   },
   {
-    name: 'Севастіан',
+    name: 'Грей',
     age: '6 місяців',
-    desc: 'Маленький і грайливий кошеня, шукає родину.',
+    desc: 'Спокійний і милий, ідеальний компаньйон для дому.',
     image: cat4
   }
 ]
@@ -69,11 +57,13 @@ const cats = [
   position: fixed;
   inset: 0;
   overflow-y: auto;
+
+  padding-top: 10px;
   padding-bottom: 120px;
+
   background: linear-gradient(135deg, #9b2cff, #b84cff);
   color: white;
 }
-
 .cats-page::after {
   content: '';
   position: fixed;
@@ -85,23 +75,59 @@ const cats = [
   pointer-events: none;
 }
 
-.cat-card {
-  transition: transform 0.3s ease;
-  overflow: hidden;
-  border-radius: 18px;
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
 }
 
-.cat-card:hover {
+h2 {
+  font-size: 45px;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  color: #333;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
   transform: translateY(-6px);
 }
 
-.card-img-top {
+.card img {
+  width: 100%;
   height: 225px;
   object-fit: cover;
 }
 
-.badge {
-  color: #7a3cff !important;
-  font-size: 0.9rem;
+.card h3 {
+  margin: 0px 15px 5px;
+}
+
+.card span {
+  color: #7a3cff;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+.card p {
+  padding: 10px 15px 20px;
+  font-size: 14px;
 }
 </style>

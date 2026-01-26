@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Hero from '../components/Hero.vue'
 import Cats from '../components/Cats.vue'
 import Dogs from '../components/Dogs.vue'
+import Hamsters from '../components/Hamsters.vue'
 
 const routes = [
     { path: '/', component: Hero },
     { path: '/cats', component: Cats },
-    { path: '/dogs', component: Dogs }
+    { path: '/dogs', component: Dogs },
+    { path: '/hamsters', component: Hamsters }
 ]
 
 const router = createRouter({
