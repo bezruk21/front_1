@@ -9,26 +9,21 @@ const { triggerToast } = useToast();
 const emit = defineEmits(['switch', 'success']);
 
 const formData = reactive({
-  email: '',
   username: '',
+  email: '',
   password: '',
   confirmPassword: ''
 });
 
-const errorMessage = ref('');
 const isLoading = ref(false);
 
 const submit = async () => {
-  errorMessage.value = '';
-
   if (formData.password !== formData.confirmPassword) {
-    errorMessage.value = 'Паролі не співпадають';
     triggerToast('Паролі не співпадають', 'error');
     return;
   }
 
   isLoading.value = true;
-
   try {
     const payload = {
       email: formData.email,
@@ -36,7 +31,7 @@ const submit = async () => {
       password: formData.password
     };
 
-    const { data, response, error } = await useFetch('http://127.0.0.1:8000/auth/register', {
+    const { data, response, error } = await useFetch('http://127.0.0.1:8000/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -45,98 +40,62 @@ const submit = async () => {
     isLoading.value = false;
 
     if (error.value || !response.value.ok) {
-      const msg = data.value?.detail || 'Помилка при реєстрації';
-      errorMessage.value = msg;
-      triggerToast(msg, 'error');
+      triggerToast(data.value?.detail || 'Помилка реєстрації', 'error');
       return;
     }
 
-    const newUser = data.value;
-    register(newUser);
-    triggerToast('Реєстрація успішна!', 'success');
+    register(data.value);
+    triggerToast('Акаунт створено успішно!', 'success');
     emit('success');
-
   } catch (e) {
     isLoading.value = false;
-    errorMessage.value = 'Помилка з\'єднання';
     triggerToast('Сервер не відповідає', 'error');
   }
 };
 </script>
 
 <template>
-  <div>
-    <h2 class="fw-bold mb-4 text-center">Реєстрація</h2>
-
-    <div class="mb-3">
-      <input
-          v-model="formData.username"
-          class="form-control form-control-lg bg-light border-0"
-          placeholder="Ім'я"
-      />
+  <div class="d-flex flex-column gap-2">
+    <div>
+      <label class="form-label small text-muted fw-bold mb-1">Ім'я</label>
+      <input v-model="formData.username" class="form-control bg-light border-0" />
     </div>
 
-    <div class="mb-3">
-      <input
-          v-model="formData.email"
-          type="email"
-          class="form-control form-control-lg bg-light border-0"
-          placeholder="Email"
-      />
+    <div>
+      <label class="form-label small text-muted fw-bold mb-1">Email</label>
+      <input v-model="formData.email" type="email" class="form-control bg-light border-0" />
     </div>
 
-    <div class="row g-2 mb-3">
+    <div class="row g-2">
       <div class="col-6">
-        <input
-            v-model="formData.password"
-            type="password"
-            class="form-control bg-light border-0"
-            placeholder="Пароль"
-        />
+        <label class="form-label small text-muted fw-bold mb-1">Пароль</label>
+        <input v-model="formData.password" type="password" class="form-control bg-light border-0" />
       </div>
       <div class="col-6">
-        <input
-            v-model="formData.confirmPassword"
-            type="password"
-            class="form-control bg-light border-0"
-            placeholder="Підтвердження"
-        />
+        <label class="form-label small text-muted fw-bold mb-1">Ще раз</label>
+        <input v-model="formData.confirmPassword" type="password" class="form-control bg-light border-0" />
       </div>
     </div>
 
-    <p v-if="errorMessage" class="text-danger small text-center mb-3">
-      {{ errorMessage }}
-    </p>
+    <button
+        class="btn btn-primary w-100 fw-bold py-2 mt-3 rounded-3"
+        @click="submit"
+        :disabled="isLoading"
+    >
+      {{ isLoading ? 'Створення...' : 'Зареєструватися' }}
+    </button>
 
-    <div class="d-grid mb-3">
-      <button
-          class="btn btn-primary btn-lg rounded-3 fw-bold"
-          @click="submit"
-          :disabled="isLoading"
-      >
-        {{ isLoading ? 'Обробка...' : 'Зареєструватися' }}
-      </button>
-    </div>
-
-    <p class="text-center text-muted">
-      Вже є акаунт?
-      <a href="#" class="text-primary fw-bold text-decoration-none" @click.prevent="emit('switch')">
+    <div class="text-center mt-2">
+      <small class="text-muted">Вже є акаунт? </small>
+      <a href="#" class="text-decoration-none fw-bold text-primary small" @click.prevent="emit('switch')">
         Увійти
       </a>
-    </p>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.btn-primary {
-  background-color: #4a3f6b;
-  border-color: #4a3f6b;
-}
-.btn-primary:hover {
-  background-color: #3a3155;
-  border-color: #3a3155;
-}
-.text-primary {
-  color: #4a3f6b !important;
-}
+.btn-primary { background-color: #4a3f6b; border: none; }
+.btn-primary:hover { background-color: #3a3155; }
+.text-primary { color: #4a3f6b !important; }
 </style>
