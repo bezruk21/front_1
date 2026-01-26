@@ -8,57 +8,47 @@ const { show, message, type, closeToast } = useToast();
   <Transition name="toast">
     <div
         v-if="show"
-        class="toast"
+        class="toast-custom shadow-lg d-flex align-items-center p-3 mb-3 bg-white rounded"
         :class="type"
         @click="closeToast"
     >
-      <span class="icon">{{ type === 'success' ? '✅' : '❌' }}</span>
-      <span class="text">{{ message }}</span>
+      <div class="fs-4 me-3">
+        {{ type === 'success' ? '✅' : '❌' }}
+      </div>
+      <div class="fw-semibold text-dark">
+        {{ message }}
+      </div>
     </div>
   </Transition>
 </template>
 
 <style scoped>
-.toast {
+.toast-custom {
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 15px 25px;
-  border-radius: 12px;
-  background: white;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  z-index: 9999;
-  cursor: pointer;
+  z-index: 1060;
   min-width: 300px;
-  border-left: 5px solid;
+  cursor: pointer;
+  border-left: 6px solid #ccc;
 }
 
-.toast.success {
-  border-left-color: #4CAF50;
-  color: #2E7D32;
+.toast-custom.success {
+  border-left-color: #198754;
 }
 
-.toast.error {
-  border-left-color: #F44336;
-  color: #C62828;
-}
-
-.text {
-  font-weight: 600;
-  font-size: 14px;
+.toast-custom.error {
+  border-left-color: #dc3545;
 }
 
 .toast-enter-active,
 .toast-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .toast-enter-from,
 .toast-leave-to {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(100px);
 }
 </style>

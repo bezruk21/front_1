@@ -36,7 +36,7 @@ const submit = async () => {
       password: formData.password
     };
 
-    const { data, response, error } = await useFetch('http://127.0.0.1:8000/register', {
+    const { data, response, error } = await useFetch('http://127.0.0.1:8000/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -45,7 +45,6 @@ const submit = async () => {
     isLoading.value = false;
 
     if (error.value || !response.value.ok) {
-      console.log("Помилка реєстрації:", data.value);
       const msg = data.value?.detail || 'Помилка при реєстрації';
       errorMessage.value = msg;
       triggerToast(msg, 'error');
@@ -53,48 +52,91 @@ const submit = async () => {
     }
 
     const newUser = data.value;
-
     register(newUser);
-
-    triggerToast('Реєстрація успішна! Ласкаво просимо.', 'success');
+    triggerToast('Реєстрація успішна!', 'success');
     emit('success');
 
   } catch (e) {
-    console.error(e);
     isLoading.value = false;
     errorMessage.value = 'Помилка з\'єднання';
     triggerToast('Сервер не відповідає', 'error');
-
   }
 };
 </script>
 
 <template>
-  <div class="form">
-    <h2>Приєднуйтесь до нас</h2>
+  <div>
+    <h2 class="fw-bold mb-4 text-center">Реєстрація</h2>
 
-    <input v-model="formData.username" placeholder="Ім'я" />
-    <input v-model="formData.email" type="email" placeholder="Email" />
-    <input v-model="formData.password" type="password" placeholder="Пароль" />
-    <input v-model="formData.confirmPassword" type="password" placeholder="Підтвердьте пароль" />
+    <div class="mb-3">
+      <input
+          v-model="formData.username"
+          class="form-control form-control-lg bg-light border-0"
+          placeholder="Ім'я"
+      />
+    </div>
 
-    <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
+    <div class="mb-3">
+      <input
+          v-model="formData.email"
+          type="email"
+          class="form-control form-control-lg bg-light border-0"
+          placeholder="Email"
+      />
+    </div>
 
-    <button class="main" @click="submit" :disabled="isLoading">
-      {{ isLoading ? 'Реєстрація...' : 'Зареєструватися' }}
-    </button>
+    <div class="row g-2 mb-3">
+      <div class="col-6">
+        <input
+            v-model="formData.password"
+            type="password"
+            class="form-control bg-light border-0"
+            placeholder="Пароль"
+        />
+      </div>
+      <div class="col-6">
+        <input
+            v-model="formData.confirmPassword"
+            type="password"
+            class="form-control bg-light border-0"
+            placeholder="Підтвердження"
+        />
+      </div>
+    </div>
 
-    <p>
+    <p v-if="errorMessage" class="text-danger small text-center mb-3">
+      {{ errorMessage }}
+    </p>
+
+    <div class="d-grid mb-3">
+      <button
+          class="btn btn-primary btn-lg rounded-3 fw-bold"
+          @click="submit"
+          :disabled="isLoading"
+      >
+        {{ isLoading ? 'Обробка...' : 'Зареєструватися' }}
+      </button>
+    </div>
+
+    <p class="text-center text-muted">
       Вже є акаунт?
-      <span class="link" @click="emit('switch')">Увійти</span>
+      <a href="#" class="text-primary fw-bold text-decoration-none" @click.prevent="emit('switch')">
+        Увійти
+      </a>
     </p>
   </div>
 </template>
 
 <style scoped>
-.form { display: flex; flex-direction: column; gap: 15px; }
-input { padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
-.main { padding: 10px; background: #4a3f6b; color: white; border: none; border-radius: 8px; cursor: pointer; }
-.error-text { color: red; font-size: 14px; margin: 0; }
-.link { color: #4a3f6b; cursor: pointer; font-weight: bold; }
+.btn-primary {
+  background-color: #4a3f6b;
+  border-color: #4a3f6b;
+}
+.btn-primary:hover {
+  background-color: #3a3155;
+  border-color: #3a3155;
+}
+.text-primary {
+  color: #4a3f6b !important;
+}
 </style>

@@ -5,7 +5,6 @@ import { useAuth } from '../../composables/useAuth';
 import { useToast } from '../../composables/useToast';
 
 const { triggerToast } = useToast();
-
 const { login } = useAuth();
 const emit = defineEmits(['switch', 'success']);
 
@@ -29,28 +28,22 @@ const submit = async () => {
 
     const { data, response, error } = await useFetch('http://127.0.0.1:8000/auth/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }).json();
 
     isLoading.value = false;
 
     if (error.value || !response.value.ok) {
-      console.log("Помилка:", data.value);
       errorMessage.value = data.value?.detail || 'Невірний логін або пароль';
       return;
     }
 
     const result = data.value;
-
     if (result.access_token) {
       localStorage.setItem('access_token', result.access_token);
       login({ email: formData.email });
-
       triggerToast('Ви успішно увійшли!', 'success');
-
       emit('success');
     }
 
@@ -64,55 +57,60 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="form">
-    <h2>Вітаємо!</h2>
+  <div>
+    <h2 class="fw-bold mb-4 text-center">Вітаємо!</h2>
 
-    <input v-model="formData.email" type="email" placeholder="Email" />
-    <input v-model="formData.password" type="password" placeholder="Пароль" />
+    <div class="mb-3">
+      <input
+          v-model="formData.email"
+          type="email"
+          class="form-control form-control-lg bg-light border-0"
+          placeholder="Email"
+      />
+    </div>
 
-    <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
+    <div class="mb-3">
+      <input
+          v-model="formData.password"
+          type="password"
+          class="form-control form-control-lg bg-light border-0"
+          placeholder="Пароль"
+      />
+    </div>
 
-    <button class="main" @click="submit" :disabled="isLoading">
-      {{ isLoading ? 'Вхід...' : 'Увійти' }}
-    </button>
+    <p v-if="errorMessage" class="text-danger small text-center mb-3">
+      {{ errorMessage }}
+    </p>
 
-    <p>
+    <div class="d-grid mb-3">
+      <button
+          class="btn btn-primary btn-lg rounded-3 fw-bold"
+          @click="submit"
+          :disabled="isLoading"
+      >
+        {{ isLoading ? 'Вхід...' : 'Увійти' }}
+      </button>
+    </div>
+
+    <p class="text-center text-muted">
       Ще не маєте акаунту?
-      <span class="link" @click="emit('switch')">Створити</span>
+      <a href="#" class="text-primary fw-bold text-decoration-none" @click.prevent="emit('switch')">
+        Створити
+      </a>
     </p>
   </div>
 </template>
 
 <style scoped>
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.btn-primary {
+  background-color: #4a3f6b;
+  border-color: #4a3f6b;
 }
-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.btn-primary:hover {
+  background-color: #3a3155;
+  border-color: #3a3155;
 }
-.main {
-  padding: 10px;
-  background: #4a3f6b;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.main:disabled {
-  background: #ccc;
-}
-.error-text {
-  color: red;
-  font-size: 14px;
-  margin: 0;
-}
-.link {
-  color: #4a3f6b;
-  cursor: pointer;
-  font-weight: bold;
+.text-primary {
+  color: #4a3f6b !important;
 }
 </style>
