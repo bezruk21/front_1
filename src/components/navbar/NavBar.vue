@@ -1,7 +1,26 @@
 <script setup>
+import AuthModal from '../auth/AuthModal.vue';
+import UserMenu from './UserMenu.vue';
 import { ref } from 'vue';
 
+const showUserMenu = ref(false);
+const showAuthModal = ref(false);
+
 const menuOpen = ref(false);
+
+const toggleUserMenu = () => {
+  showUserMenu.value = !showUserMenu.value;
+};
+
+const closeUserMenu = () => {
+  showUserMenu.value = false;
+};
+
+const openAuth = () => {
+  showAuthModal.value = true;
+  showUserMenu.value = false;
+};
+
 </script>
 
 <template>
@@ -18,6 +37,19 @@ const menuOpen = ref(false);
     <div class="right">
       <button class="btn">Контакти</button>
       <button class="btn">Про нас</button>
+
+      <div class="user-wrapper">
+        <button class="user-icon" @click="toggleUserMenu">
+          👤
+        </button>
+
+        <div v-if="showUserMenu" class="user-overlay" @click="closeUserMenu">
+          <UserMenu @login="openAuth" @click.stop />
+        </div>
+      </div>
+
+      <AuthModal v-if="showAuthModal" @close="showAuthModal = false" />
+
     </div>
 
     <div v-if="menuOpen" class="menu">
@@ -116,4 +148,15 @@ const menuOpen = ref(false);
   background: rgba(0,0,0,0.3);
   z-index: 9;
 }
+
+.user-wrapper {
+  position: relative;
+}
+
+.user-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+}
+
 </style>
