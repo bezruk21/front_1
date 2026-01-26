@@ -80,6 +80,14 @@ const menuOpen = ref(false);
 .logo {
   font-size: 30px;
   font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  color: #7a3cff;
+  transform: scale(1.05);
+  text-shadow: 0 0 10px rgba(122, 60, 255, 0.7);
 }
 
 .right {
