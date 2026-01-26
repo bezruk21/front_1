@@ -2,112 +2,91 @@
 import { reactive, ref } from 'vue';
 import { useFetch } from '@vueuse/core';
 import { useAuth } from '../../composables/useAuth';
+import { useToast } from '../../composables/useToast';
 
+const { triggerToast } = useToast();
 const { login } = useAuth();
 const emit = defineEmits(['switch', 'success']);
 
-// 1. Реактивний об'єкт для даних форми
 const formData = reactive({
   email: '',
   password: ''
 });
 
-const errorMessage = ref('');
 const isLoading = ref(false);
 
 const submit = async () => {
-  errorMessage.value = '';
   isLoading.value = true;
-
   try {
-    const formPayload = new FormData();
-
-    // ВАЖЛИВО: Бекенд чекає саме 'username'.
-    // Ми беремо значення з formData.email і кладемо його в поле 'username'.
-    formPayload.append('username', formData.email);
-    formPayload.append('password', formData.password);
+    const payload = { email: formData.email, password: formData.password };
 
     const { data, response, error } = await useFetch('http://127.0.0.1:8000/auth/login', {
       method: 'POST',
-      body: formPayload, // Відправляємо як FormData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     }).json();
 
     isLoading.value = false;
 
-    // Якщо все ще помилка - дивимось у консоль, що саме не так
     if (error.value || !response.value.ok) {
-      console.log("Помилка від сервера:", data.value); // <--- Тут буде підказка
-      errorMessage.value = 'Невірні дані';
+      triggerToast(data.value?.detail || 'Невірний логін або пароль', 'error');
       return;
     }
 
-    // Успішний вхід
-    const result = data.value;
-    if (result.access_token) {
-      localStorage.setItem('access_token', result.access_token);
-      // Якщо бекенд не повертає об'єкт user, беремо email із форми
-      login(result.user || { email: formData.email });
+    if (data.value.access_token) {
+      localStorage.setItem('access_token', data.value.access_token);
+      login({ email: formData.email });
+      triggerToast('Раді бачити знову!', 'success');
       emit('success');
     }
-
   } catch (e) {
-    console.error(e);
     isLoading.value = false;
-    errorMessage.value = 'Помилка з\'єднання';
+    triggerToast('Сервер не відповідає', 'error');
   }
 };
 </script>
 
 <template>
-  <div class="form">
-    <h2>Вітаємо!</h2>
+  <div class="d-flex flex-column">
+    <div class="mb-3">
+      <label class="form-label small text-muted fw-bold mb-1">Email</label>
+      <input
+          v-model="formData.email"
+          type="email"
+          class="form-control bg-light border-0"
+          placeholder="name@example.com"
+      />
+    </div>
 
-    <input v-model="formData.email" type="email" placeholder="Email" />
-    <input v-model="formData.password" type="password" placeholder="Пароль" />
+    <div class="mb-3">
+      <label class="form-label small text-muted fw-bold mb-1">Пароль</label>
+      <input
+          v-model="formData.password"
+          type="password"
+          class="form-control bg-light border-0"
+          placeholder="••••••••"
+      />
+    </div>
 
-    <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
-
-    <button class="main" @click="submit" :disabled="isLoading">
+    <button
+        class="btn btn-primary w-100 fw-bold py-2 mt-2 rounded-3"
+        @click="submit"
+        :disabled="isLoading"
+    >
       {{ isLoading ? 'Вхід...' : 'Увійти' }}
     </button>
 
-    <p>
-      Ще не маєте акаунту?
-      <span class="link" @click="emit('switch')">Створити</span>
-    </p>
+    <div class="text-center mt-3">
+      <small class="text-muted">Немає акаунту? </small>
+      <a href="#" class="text-decoration-none fw-bold text-primary small" @click.prevent="emit('switch')">
+        Створити
+      </a>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-.main {
-  padding: 10px;
-  background: #4a3f6b;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.main:disabled {
-  background: #ccc;
-}
-.error-text {
-  color: red;
-  font-size: 14px;
-  margin: 0;
-}
-.link {
-  color: #4a3f6b;
-  cursor: pointer;
-  font-weight: bold;
-}
+.btn-primary { background-color: #4a3f6b; border: none; }
+.btn-primary:hover { background-color: #3a3155; }
+.text-primary { color: #4a3f6b !important; }
 </style>

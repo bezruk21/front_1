@@ -9,7 +9,7 @@ const { setUser, logout } = useAuth();
 
 const showUserMenu = ref(false);
 const showAuthModal = ref(false);
-const menuOpen = ref(false);
+const menuOpen = ref(false); // Відповідає за відкриття бокового меню
 
 const toggleUserMenu = async () => {
   if (!showUserMenu.value) {
@@ -45,170 +45,127 @@ const openAuth = () => {
 </script>
 
 <template>
-  <header class="navbar">
-    <div class="left">
-      <button class="burger" @click="menuOpen = !menuOpen">
-        <span></span>
-        <span></span>
-        <span></span>
+  <header class="navbar fixed-top px-3 px-md-4">
+
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn text-white fs-4 p-0 border-0" @click="menuOpen = true">
+        <i class="bi bi-list"></i> <span v-if="!menuOpen" class="burger-icon">☰</span>
       </button>
-<!--      <div class="logo">🐾 LAPKY</div>-->
-      <div class="logo" @click="$router.push('/')">🐾 LAPKY</div>
+
+      <div class="logo text-white" @click="$router.push('/')">
+        🐾 LAPKY
+      </div>
     </div>
 
-    <div class="right">
-      <button class="btn">Контакти</button>
-      <button class="btn">Про нас</button>
+    <div class="d-flex align-items-center gap-3">
 
-      <div class="user-wrapper">
-        <button class="user-icon" @click="toggleUserMenu">
+      <div class="d-none d-md-flex gap-2">
+        <button class="btn btn-custom rounded-pill px-4">Контакти</button>
+        <button class="btn btn-custom rounded-pill px-4">Про нас</button>
+      </div>
+
+      <div class="position-relative">
+        <button class="btn text-white fs-4 p-0 border-0" @click="toggleUserMenu">
           👤
         </button>
 
-        <div v-if="showUserMenu" class="user-overlay" @click="closeUserMenu">
-          <div class="menu-container" @click.stop>
-            <UserMenu @login="openAuth" @close="closeUserMenu" />
-          </div>
+        <div v-if="showUserMenu" class="user-dropdown-wrapper">
+          <div class="user-overlay-backdrop" @click="closeUserMenu"></div> <div class="position-absolute end-0 mt-2" style="z-index: 1050; min-width: 200px;">
+          <UserMenu @login="openAuth" @close="closeUserMenu" />
+        </div>
         </div>
       </div>
-
-      <AuthModal v-if="showAuthModal" @close="showAuthModal = false" />
     </div>
 
-    <div v-if="menuOpen" class="menu">
-      <a class="menu-link" @click="$router.push('/cats')">🐱 Коти</a>
-      <a class="menu-link" @click="$router.push('/dogs')">🐶 Собаки</a>
-      <a href="#">🐹 Хом'яки</a>
-      <a href="#">🦜 Папугаї</a>
+    <AuthModal v-if="showAuthModal" @close="showAuthModal = false" />
+
+    <div v-if="menuOpen" class="offcanvas-backdrop fade show" @click="menuOpen = false"></div>
+
+    <div
+        class="offcanvas offcanvas-start bg-white"
+        :class="{ 'show': menuOpen }"
+        style="visibility: visible; width: 280px;"
+        tabindex="-1"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title fw-bold text-primary">Меню</h5>
+        <button type="button" class="btn-close" @click="menuOpen = false"></button>
+      </div>
+
+      <div class="offcanvas-body d-flex flex-column gap-2">
+        <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/cats'); menuOpen=false">🐱 Коти</a>
+        <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/dogs'); menuOpen=false">🐶 Собаки</a>
+        <a class="nav-link fs-5 fw-bold text-dark" href="#">🐹 Хом'яки</a>
+        <a class="nav-link fs-5 fw-bold text-dark" href="#">🦜 Папугаї</a>
+
+        <hr class="d-md-none my-3"> <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Контакти</button>
+        <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Про нас</button>
+      </div>
     </div>
 
-    <div v-if="menuOpen" class="bg" @click="menuOpen = false"></div>
   </header>
 </template>
 
 <style scoped>
-
-.menu-link {
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.menu-link:hover {
-  color: #7a3cff;
-}
-
 .navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: transparent;
-  color: white;
-  z-index: 10;
-}
-
-.left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.burger {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.burger span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background: white;
-  margin: 5px 0;
+  background: linear-gradient(to bottom, rgba(74, 63, 107, 0.9), transparent);
+  transition: background 0.3s;
+  z-index: 1030;
 }
 
 .logo {
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.2s;
+  user-select: none;
 }
-
 .logo:hover {
-  color: #7a3cff;
   transform: scale(1.05);
-  text-shadow: 0 0 10px rgba(122, 60, 255, 0.7);
 }
 
-.right {
-  display: flex;
-  gap: 15px;
-}
-
-.btn {
-  padding: 12px 25px;
-  background: #4a3f6b;
+.btn-custom {
+  background-color: #4a3f6b;
   color: white;
   border: none;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  transition: all 0.2s;
 }
-
-.btn:hover {
+.btn-custom:hover {
+  background-color: #3a3155;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  color: white;
 }
 
-.menu {
-  position: absolute;
-  top: 80px;
-  left: 30px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 11;
+.burger-icon {
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
-.menu a {
-  display: block;
-  color: #4a3f6b;
-  padding: 10px;
-  text-decoration: none;
-}
-
-.bg {
+.user-overlay-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.3);
-  z-index: 9;
+  z-index: 1040;
+  cursor: default;
 }
 
-.user-wrapper {
-  position: relative;
-}
-
-.user-icon {
-  font-size: 24px;
-  background: none;
-  border: none;
+.nav-link {
   cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-link:hover {
+  background-color: #f0f0f5;
+  color: #7a3cff !important;
 }
 
-.user-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
+.offcanvas {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%);
 }
-
-.menu-container {
-  position: absolute;
-  top: 60px;
-  right: 0;
+.offcanvas.show {
+  transform: translateX(0);
 }
 </style>
