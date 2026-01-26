@@ -2,13 +2,15 @@
 import { reactive, ref } from 'vue';
 import { useFetch } from '@vueuse/core';
 import { useAuth } from '../../composables/useAuth';
+import { useToast } from '../../composables/useToast';
 
 const { register } = useAuth();
+const { triggerToast } = useToast();
 const emit = defineEmits(['switch', 'success']);
 
 const formData = reactive({
   email: '',
-  username: '', // Часто потрібно для FastAPI
+  username: '',
   password: '',
   confirmPassword: ''
 });
@@ -19,23 +21,22 @@ const isLoading = ref(false);
 const submit = async () => {
   errorMessage.value = '';
 
-  // Валідація на клієнті
   if (formData.password !== formData.confirmPassword) {
     errorMessage.value = 'Паролі не співпадають';
+    triggerToast('Паролі не співпадають', 'error');
     return;
   }
 
   isLoading.value = true;
 
   try {
-    // Відправляємо дані (без confirmPassword)
     const payload = {
       email: formData.email,
-      username: formData.username || formData.email, // Якщо немає окремого поля імені
+      username: formData.username || formData.email,
       password: formData.password
     };
 
-    const { data, response, error } = await useFetch('http://127.0.0.1:8000/auth/register', {
+    const { data, response, error } = await useFetch('http://127.0.0.1:8000/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -44,23 +45,26 @@ const submit = async () => {
     isLoading.value = false;
 
     if (error.value || !response.value.ok) {
-      // Якщо бекенд повертає деталі помилки (наприклад "Email зайнятий")
-      errorMessage.value = data.value?.detail || 'Помилка реєстрації';
+      console.log("Помилка реєстрації:", data.value);
+      const msg = data.value?.detail || 'Помилка при реєстрації';
+      errorMessage.value = msg;
+      triggerToast(msg, 'error');
       return;
     }
 
-    // Успіх!
-    // Зазвичай після реєстрації треба або залогінитись автоматично,
-    // або попросити юзера увійти.
-    // Припустимо, бекенд відразу віддає юзера:
     const newUser = data.value;
 
     register(newUser);
+
+    triggerToast('Реєстрація успішна! Ласкаво просимо.', 'success');
     emit('success');
 
   } catch (e) {
+    console.error(e);
     isLoading.value = false;
     errorMessage.value = 'Помилка з\'єднання';
+    triggerToast('Сервер не відповідає', 'error');
+
   }
 };
 </script>
@@ -88,7 +92,6 @@ const submit = async () => {
 </template>
 
 <style scoped>
-/* Ті самі стилі, що і в логіні */
 .form { display: flex; flex-direction: column; gap: 15px; }
 input { padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
 .main { padding: 10px; background: #4a3f6b; color: white; border: none; border-radius: 8px; cursor: pointer; }
