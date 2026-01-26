@@ -6,7 +6,8 @@ import Dogs from '../components/Dogs.vue'
 const routes = [
     { path: '/', component: Hero },
     { path: '/cats', component: Cats },
-    { path: '/dogs', component: Dogs }
+    { path: '/dogs', component: Dogs },
+    { path: '/hamsters', component: Hamsters }
 ]
 
 const router = createRouter({
