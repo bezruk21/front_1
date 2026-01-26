@@ -1,36 +1,17 @@
 <script setup>
 import { ref } from 'vue';
-import { useFetch } from '@vueuse/core';
 import { useAuth } from '../../composables/useAuth';
 import AuthModal from '../auth/AuthModal.vue';
 import UserMenu from './UserMenu.vue';
 
-const { setUser, logout } = useAuth();
+const { user } = useAuth();
 
 const showUserMenu = ref(false);
 const showAuthModal = ref(false);
-const menuOpen = ref(false); // Відповідає за відкриття бокового меню
+const menuOpen = ref(false);
 
-const toggleUserMenu = async () => {
-  if (!showUserMenu.value) {
-    const token = localStorage.getItem('access_token');
-
-    if (token) {
-      const { data, statusCode } = await useFetch('http://127.0.0.1:8000/users/me', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }).json();
-
-      if (statusCode.value === 200 && data.value) {
-        setUser(data.value);
-      } else {
-        logout();
-      }
-    } else {
-      logout();
-    }
-  }
+const toggleUserMenu = () => {
+  // Просто перемикаємо видимість меню
   showUserMenu.value = !showUserMenu.value;
 };
 
@@ -70,9 +51,10 @@ const openAuth = () => {
         </button>
 
         <div v-if="showUserMenu" class="user-dropdown-wrapper">
-          <div class="user-overlay-backdrop" @click="closeUserMenu"></div> <div class="position-absolute end-0 mt-2" style="z-index: 1050; min-width: 200px;">
-          <UserMenu @login="openAuth" @close="closeUserMenu" />
-        </div>
+          <div class="user-overlay-backdrop" @click="closeUserMenu"></div>
+          <div class="position-absolute end-0 mt-2" style="z-index: 1050; min-width: 200px;">
+            <UserMenu @login="openAuth" @close="closeUserMenu" />
+          </div>
         </div>
       </div>
     </div>
@@ -98,7 +80,8 @@ const openAuth = () => {
         <a class="nav-link fs-5 fw-bold text-dark" href="#">🐹 Хом'яки</a>
         <a class="nav-link fs-5 fw-bold text-dark" href="#">🦜 Папугаї</a>
 
-        <hr class="d-md-none my-3"> <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Контакти</button>
+        <hr class="d-md-none my-3">
+        <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Контакти</button>
         <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Про нас</button>
       </div>
     </div>
