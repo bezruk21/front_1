@@ -11,45 +11,52 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <div class="user-menu">
-    <template v-if="!isAuthenticated">
-      <button class="menu-btn" @click="emit('login')">
-        ➜ Увійти
-      </button>
-    </template>
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+    <div class="card-body p-2 d-flex flex-column gap-1">
 
-    <button v-else class="menu-btn" @click="handleLogout">
-      ⎋ Вийти
-    </button>
+      <template v-if="!isAuthenticated">
+        <button
+            class="btn btn-light text-start fw-semibold text-primary w-100"
+            @click="emit('login')"
+        >
+          <span class="me-2">➜</span> Увійти
+        </button>
+      </template>
+
+      <template v-else>
+        <button class="btn btn-light text-start fw-semibold w-100 disabled">
+          👤 Мій профіль
+        </button>
+
+        <hr class="my-1">
+
+        <button
+            class="btn btn-light text-start fw-semibold text-danger w-100"
+            @click="handleLogout"
+        >
+          <span class="me-2">⎋</span> Вийти
+        </button>
+      </template>
+
+    </div>
   </div>
 </template>
 
 <style scoped>
-.user-menu {
-  min-width: 150px;
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.menu-btn {
-  width: 100%;
-  text-align: left;
-  padding: 10px;
-  background: #f5f5fa;
+.btn-light {
+  background: transparent;
   border: none;
-  border-radius: 8px;
   color: #4a3f6b;
-  font-weight: 600;
-  cursor: pointer;
   transition: background 0.2s;
 }
 
-.menu-btn:hover {
-  background: #e0e0e8;
+.btn-light:hover {
+  background-color: #f5f5fa;
+  color: #7a3cff;
+}
+
+.btn-light.text-danger:hover {
+  background-color: #fff5f5;
+  color: #dc3545;
 }
 </style>
