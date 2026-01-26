@@ -1,22 +1,32 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
-const isAuthenticated = ref(false);
+const user = ref(null);
 
 export function useAuth() {
-    const login = () => {
-        isAuthenticated.value = true;
+
+    const isAuthenticated = computed(() => !!user.value);
+
+    const setUser = (userData) => {
+        user.value = userData;
+    };
+
+    const login = (userData) => {
+        user.value = userData;
     };
 
     const logout = () => {
-        isAuthenticated.value = false;
+        user.value = null;
+        localStorage.removeItem('access_token');
     };
 
-    const register = () => {
-        isAuthenticated.value = true;
+    const register = (userData) => {
+        user.value = userData;
     };
 
     return {
+        user,
         isAuthenticated,
+        setUser,
         login,
         logout,
         register,
