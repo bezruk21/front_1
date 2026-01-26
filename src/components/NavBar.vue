@@ -21,7 +21,7 @@ const menuOpen = ref(false);
     </div>
 
     <div v-if="menuOpen" class="menu">
-      <a @click="$router.push('/cats')">🐱 Коти</a>
+      <a class="menu-link" @click="$router.push('/cats')">🐱 Коти</a>
       <a href="#">🐶 Собаки</a>
       <a href="#">🐹 Хом'яки</a>
       <a href="#">🦜 Папугаї</a>
@@ -32,6 +32,15 @@ const menuOpen = ref(false);
 </template>
 
 <style scoped>
+.menu-link {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.menu-link:hover {
+  color: #7a3cff;
+}
+
 .navbar {
   position: fixed;
   top: 0;
