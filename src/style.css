@@ -77,3 +77,73 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #4a3f6b;
+}
+
+.form input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.form input:focus {
+  outline: none;
+  border-color: #6b5ca5;
+}
+
+.form .main {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: #4a3f6b;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form .main:hover {
+  background: #5c4d8a;
+}
+
+.form p {
+  text-align: center;
+  font-size: 14px;
+}
+
+.form span {
+  color: #6b5ca5;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal {
+  background: white;
+  color: #213547; /* або #333 */
+}
+
+.close {
+  color: #333;
+  opacity: 0.7;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.form p {
+  color: #555;
+}
+
