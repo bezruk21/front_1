@@ -44,7 +44,7 @@ const dogs = [
     image: dog3
   },
   {
-    name: 'Чак',
+    name: 'Граф',
     age: '6 місяців',
     desc: 'Спокійний та вихований, ідеальний компаньйон.',
     image: dog4
@@ -58,11 +58,21 @@ const dogs = [
   inset: 0;
   overflow-y: auto;
 
-  padding-top: 140px;
+  padding-top: 10px;
   padding-bottom: 120px;
 
   background: linear-gradient(135deg, #9b2cff, #b84cff);
   color: white;
+}
+.dogs-page::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to top, rgba(155,44,255,0.8), transparent);
+  pointer-events: none;
 }
 
 .container {
@@ -72,19 +82,19 @@ const dogs = [
 }
 
 h2 {
-  font-size: 48px;
-  margin-bottom: 10px;
+  font-size: 45px;
+  margin-bottom: 5px;
 }
 
 .subtitle {
-  margin-bottom: 40px;
+  margin-bottom: 25px;
   opacity: 0.9;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 25px;
+  gap: 20px;
 }
 
 .card {
@@ -102,12 +112,12 @@ h2 {
 
 .card img {
   width: 100%;
-  height: 220px;
+  height: 225px;
   object-fit: cover;
 }
 
 .card h3 {
-  margin: 15px 15px 5px;
+  margin: 0px 15px 5px;
 }
 
 .card span {
