@@ -77,7 +77,7 @@ const openAuth = () => {
 
     <div v-if="menuOpen" class="menu">
       <a class="menu-link" @click="$router.push('/cats')">🐱 Коти</a>
-      <a href="#">🐶 Собаки</a>
+      <a class="menu-link" @click="$router.push('/dogs')">🐶 Собаки</a>
       <a href="#">🐹 Хом'яки</a>
       <a href="#">🦜 Папугаї</a>
     </div>

@@ -1,17 +1,17 @@
 <template>
-  <section class="cats-page">
+  <section class="dogs-page">
     <div class="container">
-      <h2>😺 Коти</h2>
+      <h2>🐶 Собаки</h2>
       <p class="subtitle">
-        Знайдіть свого ідеального котика! Всі наші хвостаті друзі чекають на люблячу родину.
+        Вірні друзі шукають дім та люблячих господарів.
       </p>
 
       <div class="grid">
-        <div class="card" v-for="cat in cats" :key="cat.name">
-          <img :src="cat.image" />
-          <h3>{{ cat.name }}</h3>
-          <span>{{ cat.age }}</span>
-          <p>{{ cat.desc }}</p>
+        <div class="card" v-for="dog in dogs" :key="dog.name">
+          <img :src="dog.image" />
+          <h3>{{ dog.name }}</h3>
+          <span>{{ dog.age }}</span>
+          <p>{{ dog.desc }}</p>
         </div>
       </div>
     </div>
@@ -19,41 +19,41 @@
 </template>
 
 <script setup>
-import cat1 from '../assets/cat1.jpg'
-import cat2 from '../assets/cat2.jpg'
-import cat3 from '../assets/cat3.jpg'
-import cat4 from '../assets/cat4.jpg'
+import dog1 from '../assets/dog1.jpg'
+import dog2 from '../assets/dog2.jpg'
+import dog3 from '../assets/dog3.jpg'
+import dog4 from '../assets/dog4.jpg'
 
-const cats = [
+const dogs = [
   {
-    name: 'Мурка',
-    age: '2 роки',
-    desc: 'Ласкава кицька, любить гратися та спати на сонечку.',
-    image: cat1
-  },
-  {
-    name: 'Барсик',
-    age: '1 рік',
-    desc: 'Енергійний котик, обожнює гратися та досліджувати.',
-    image: cat2
-  },
-  {
-    name: 'Сіра',
+    name: 'Рекс',
     age: '3 роки',
-    desc: 'Спокійна киця, ідеальна для квартири.',
-    image: cat3
+    desc: 'Вірний та слухняний пес, любить активні прогулянки.',
+    image: dog1
   },
   {
-    name: 'Севастіан',
+    name: 'Чак',
+    age: '2 роки',
+    desc: 'Грайливий та дружелюбний, добре ладить з дітьми.',
+    image: dog2
+  },
+  {
+    name: 'Лайма',
+    age: '1 рік',
+    desc: 'Молода енергійна собачка, потребує активного господаря.',
+    image: dog3
+  },
+  {
+    name: 'Граф',
     age: '6 місяців',
-    desc: 'Маленький і грайливий кошеня, шукає родину.',
-    image: cat4
+    desc: 'Спокійний та вихований, ідеальний компаньйон.',
+    image: dog4
   }
 ]
 </script>
 
 <style scoped>
-.cats-page {
+.dogs-page {
   position: fixed;
   inset: 0;
   overflow-y: auto;
@@ -64,8 +64,7 @@ const cats = [
   background: linear-gradient(135deg, #9b2cff, #b84cff);
   color: white;
 }
-
-.cats-page::after {
+.dogs-page::after {
   content: '';
   position: fixed;
   bottom: 0;
@@ -118,7 +117,7 @@ h2 {
 }
 
 .card h3 {
-  margin: 15px 15px 5px;
+  margin: 0px 15px 5px;
 }
 
 .card span {
