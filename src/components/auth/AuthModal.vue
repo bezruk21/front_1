@@ -1,59 +1,54 @@
 <script setup>
-import LoginForm from './LoginForm.vue';
-import RegisterForm from './RegisterForm.vue';
-import { ref } from 'vue';
+import { useToast } from '../../composables/useToast';
 
-const emit = defineEmits(['close']);
-const isLogin = ref(true);
+const { show, message, type, closeToast } = useToast();
 </script>
 
 <template>
-  <div class="overlay" @click.self="emit('close')">
-    <div class="modal">
-      <button class="close" @click="emit('close')">✕</button>
-
-      <LoginForm
-          v-if="isLogin"
-          @switch="isLogin = false"
-          @success="emit('close')"
-      />
-
-      <RegisterForm
-          v-else
-          @switch="isLogin = true"
-          @success="emit('close')"
-      />
-
+  <Transition name="toast">
+    <div
+        v-if="show"
+        class="toast-custom shadow-lg d-flex align-items-center p-3 mb-3 bg-white rounded"
+        :class="type"
+        @click="closeToast"
+    >
+      <div class="fs-4 me-3">
+        {{ type === 'success' ? '✅' : '❌' }}
+      </div>
+      <div class="fw-semibold text-dark">
+        {{ message }}
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <style scoped>
-.overlay {
+.toast-custom {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  z-index: 50;
+  top: 20px;
+  right: 20px;
+  z-index: 1060;
+  min-width: 300px;
+  cursor: pointer;
+  border-left: 6px solid #ccc;
 }
 
-.modal {
-  background: white;
-  width: 380px;
-  border-radius: 20px;
-  margin: 100px auto;
-  padding: 30px;
-  position: relative;
+.toast-custom.success {
+  border-left-color: #198754;
 }
 
-.close {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  background: none;
-  border: none;
-  font-size: 18px;
+.toast-custom.error {
+  border-left-color: #dc3545;
 }
 
+.toast-enter-active,
+.toast-leave-active {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
 
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateX(100px);
+}
 </style>
