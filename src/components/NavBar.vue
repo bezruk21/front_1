@@ -12,7 +12,8 @@ const menuOpen = ref(false);
         <span></span>
         <span></span>
       </button>
-      <div class="logo">🐾 LAPKY</div>
+<!--      <div class="logo">🐾 LAPKY</div>-->
+      <div class="logo" @click="$router.push('/')">🐾 LAPKY</div>
     </div>
 
     <div class="right">

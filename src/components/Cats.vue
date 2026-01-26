@@ -49,11 +49,15 @@ const cats = [
 
 <style scoped>
 .cats-page {
-  min-height: 100vh;
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+
   padding-top: 140px;
   background: linear-gradient(135deg, #9b2cff, #b84cff);
   color: white;
 }
+
 
 .container {
   max-width: 1200px;
