@@ -25,7 +25,7 @@ const menuOpen = ref(false);
       <a class="menu-link" @click="$router.push('/cats')">🐱 Коти</a>
       <a class="menu-link" @click="$router.push('/dogs')">🐶 Собаки</a>
       <a class="menu-link" @click="$router.push('/hamsters')">🐹 Хом'яки</a>
-      <a class="menu-link" @click="$router.push('/parrots')">🦜 Папугаї</a>
+      <a class="menu-link" @click="$router.push('/parrots')">🦜 Попугаї</a>
     </div>
 
     <div v-if="menuOpen" class="bg" @click="menuOpen = false"></div>
