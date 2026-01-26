@@ -1,7 +1,7 @@
 <template>
   <section class="hamsters-page">
     <div class="container">
-      <h2>🐹 Хом'яки</h2>
+      <h2>🐹 Хом'ячки</h2>
       <p class="subtitle">
         Маленькі пухнастики шукають дім та люблячих господарів.
       </p>
@@ -19,10 +19,10 @@
 </template>
 
 <script setup>
-import hamster1 from '../assets/dog1.jpg'
-import hamster2 from '../assets/dog2.jpg'
-import hamster3 from '../assets/dog3.jpg'
-import hamster4 from '../assets/dog4.jpg'
+import hamster1 from '../assets/hamster1.jpg'
+import hamster2 from '../assets/hamster2.jpg'
+import hamster3 from '../assets/hamster3.jpg'
+import hamster4 from '../assets/hamster4.jpg'
 
 const hamsters = [
   {
