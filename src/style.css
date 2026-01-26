@@ -77,3 +77,18 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 36px;
+  }
+
+  .hero-content {
+    padding-top: 100px;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+}
