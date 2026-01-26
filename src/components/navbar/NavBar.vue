@@ -1,7 +1,47 @@
 <script setup>
 import { ref } from 'vue';
+import { useFetch } from '@vueuse/core';
+import { useAuth } from '../../composables/useAuth';
+import AuthModal from '../auth/AuthModal.vue';
+import UserMenu from './UserMenu.vue';
 
+const { setUser, logout } = useAuth();
+
+const showUserMenu = ref(false);
+const showAuthModal = ref(false);
 const menuOpen = ref(false);
+
+const toggleUserMenu = async () => {
+  if (!showUserMenu.value) {
+    const token = localStorage.getItem('access_token');
+
+    if (token) {
+      const { data, statusCode } = await useFetch('http://127.0.0.1:8000/users/me', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).json();
+
+      if (statusCode.value === 200 && data.value) {
+        setUser(data.value);
+      } else {
+        logout();
+      }
+    } else {
+      logout();
+    }
+  }
+  showUserMenu.value = !showUserMenu.value;
+};
+
+const closeUserMenu = () => {
+  showUserMenu.value = false;
+};
+
+const openAuth = () => {
+  showAuthModal.value = true;
+  showUserMenu.value = false;
+};
 </script>
 
 <template>
@@ -19,6 +59,20 @@ const menuOpen = ref(false);
     <div class="right">
       <button class="btn">Контакти</button>
       <button class="btn">Про нас</button>
+
+      <div class="user-wrapper">
+        <button class="user-icon" @click="toggleUserMenu">
+          👤
+        </button>
+
+        <div v-if="showUserMenu" class="user-overlay" @click="closeUserMenu">
+          <div class="menu-container" @click.stop>
+            <UserMenu @login="openAuth" @close="closeUserMenu" />
+          </div>
+        </div>
+      </div>
+
+      <AuthModal v-if="showAuthModal" @close="showAuthModal = false" />
     </div>
 
     <div v-if="menuOpen" class="menu">
@@ -52,7 +106,6 @@ const menuOpen = ref(false);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   background: transparent;
   color: white;
   z-index: 10;
@@ -134,5 +187,28 @@ const menuOpen = ref(false);
   inset: 0;
   background: rgba(0,0,0,0.3);
   z-index: 9;
+}
+
+.user-wrapper {
+  position: relative;
+}
+
+.user-icon {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.user-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+}
+
+.menu-container {
+  position: absolute;
+  top: 60px;
+  right: 0;
 }
 </style>
