@@ -33,6 +33,7 @@ const menuOpen = ref(false);
 </template>
 
 <style scoped>
+
 .menu-link {
   cursor: pointer;
   font-weight: bold;
