@@ -2,11 +2,13 @@
 import { reactive, ref } from 'vue';
 import { useFetch } from '@vueuse/core';
 import { useAuth } from '../../composables/useAuth';
+import { useToast } from '../../composables/useToast';
+
+const { triggerToast } = useToast();
 
 const { login } = useAuth();
 const emit = defineEmits(['switch', 'success']);
 
-// 1. Реактивний об'єкт для даних форми
 const formData = reactive({
   email: '',
   password: ''
@@ -20,33 +22,35 @@ const submit = async () => {
   isLoading.value = true;
 
   try {
-    const formPayload = new FormData();
-
-    // ВАЖЛИВО: Бекенд чекає саме 'username'.
-    // Ми беремо значення з formData.email і кладемо його в поле 'username'.
-    formPayload.append('username', formData.email);
-    formPayload.append('password', formData.password);
+    const payload = {
+      email: formData.email,
+      password: formData.password
+    };
 
     const { data, response, error } = await useFetch('http://127.0.0.1:8000/auth/login', {
       method: 'POST',
-      body: formPayload, // Відправляємо як FormData
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
     }).json();
 
     isLoading.value = false;
 
-    // Якщо все ще помилка - дивимось у консоль, що саме не так
     if (error.value || !response.value.ok) {
-      console.log("Помилка від сервера:", data.value); // <--- Тут буде підказка
-      errorMessage.value = 'Невірні дані';
+      console.log("Помилка:", data.value);
+      errorMessage.value = data.value?.detail || 'Невірний логін або пароль';
       return;
     }
 
-    // Успішний вхід
     const result = data.value;
+
     if (result.access_token) {
       localStorage.setItem('access_token', result.access_token);
-      // Якщо бекенд не повертає об'єкт user, беремо email із форми
-      login(result.user || { email: formData.email });
+      login({ email: formData.email });
+
+      triggerToast('Ви успішно увійшли!', 'success');
+
       emit('success');
     }
 
@@ -54,6 +58,7 @@ const submit = async () => {
     console.error(e);
     isLoading.value = false;
     errorMessage.value = 'Помилка з\'єднання';
+    triggerToast('Помилка з\'єднання', 'error');
   }
 };
 </script>
