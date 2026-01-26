@@ -1,19 +1,31 @@
 <template>
   <section class="hamsters-page">
-    <div class="container">
-      <h2>🐹 Хом'яки</h2>
-      <p class="subtitle">
+    <div class="container py-4">
+      <h2 class="display-4 fw-bold mb-2">🐹 Хом'яки</h2>
+      <p class="lead mb-5 opacity-75">
         Маленькі пухнастики шукають дім та люблячих господарів.
       </p>
 
-      <div class="grid">
-        <div class="card" v-for="hamster in hamsters" :key="hamster.name">
-          <img :src="hamster.image" />
-          <h3>{{ hamster.name }}</h3>
-          <span>{{ hamster.age }}</span>
-          <p>{{ hamster.desc }}</p>
+      <div class="row g-4">
+        <div
+            class="col-12 col-sm-6 col-lg-3"
+            v-for="hamster in hamsters"
+            :key="hamster.name"
+        >
+          <div class="card h-100 border-0 shadow-lg hamster-card">
+            <img :src="hamster.image" class="card-img-top" :alt="hamster.name" />
+
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3 class="card-title h5 mb-0">{{ hamster.name }}</h3>
+                <span class="badge bg-light text-primary border">{{ hamster.age }}</span>
+              </div>
+              <p class="card-text text-muted small">{{ hamster.desc }}</p>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 </template>
@@ -57,13 +69,12 @@ const hamsters = [
   position: fixed;
   inset: 0;
   overflow-y: auto;
-
-  padding-top: 10px;
+  padding-top: 80px; /* Відступ під фіксований хедер */
   padding-bottom: 120px;
-
   background: linear-gradient(135deg, #9b2cff, #b84cff);
   color: white;
 }
+
 .hamsters-page::after {
   content: '';
   position: fixed;
@@ -75,59 +86,25 @@ const hamsters = [
   pointer-events: none;
 }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 20px;
-}
-
-h2 {
-  font-size: 45px;
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  margin-bottom: 25px;
-  opacity: 0.9;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: white;
-  color: #333;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+/* Стилі карток */
+.hamster-card {
   transition: transform 0.3s ease;
+  overflow: hidden;
+  border-radius: 18px;
 }
 
-.card:hover {
+.hamster-card:hover {
   transform: translateY(-6px);
 }
 
-.card img {
-  width: 100%;
-  height: 225px;
+.card-img-top {
+  height: 200px;
   object-fit: cover;
 }
 
-.card h3 {
-  margin: 0px 15px 5px;
-}
-
-.card span {
-  color: #7a3cff;
-  font-weight: bold;
-  margin-left: 15px;
-}
-
-.card p {
-  padding: 10px 15px 20px;
-  font-size: 14px;
+/* Колір бейджика */
+.badge {
+  color: #7a3cff !important;
+  font-size: 0.85rem;
 }
 </style>
