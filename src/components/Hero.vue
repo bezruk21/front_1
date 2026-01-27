@@ -11,7 +11,9 @@ import petImage from '../assets/american-staffordshire-terrier-puppy-table.jpg';
         Подаруй дім<br />
         маленким лапкам
       </h1>
-      <button>Обрати друга</button>
+      <button class="btn btn-custom rounded-pill px-4" @click="$router.push('/choose')">
+        Обрати друга
+      </button>
     </div>
 
     <div class="paws">
@@ -25,17 +27,13 @@ import petImage from '../assets/american-staffordshire-terrier-puppy-table.jpg';
 
 <style scoped>
 .hero {
-   position: fixed;  
-  top: 0;
-  left: 0;
-  width: 100vw;
+  position: relative;
+  width: 100%;
   height: 100vh;
-
-  overflow: visible;
-  z-index: 1;
-  height: 100vh;
-  width: 100vw;
+  overflow: hidden;
 }
+
+
 
 .hero-img {
   position: absolute;
