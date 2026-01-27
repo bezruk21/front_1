@@ -5,6 +5,7 @@ import Dogs from '../components/Dogs.vue'
 import Hamsters from '../components/Hamsters.vue'
 import Parrots from '../components/Parrots.vue'
 import ContactsPage from '../pages/ContactsPage.vue'
+import AboutPage from '../pages/AboutPage.vue'
 
 const routes = [
     { path: '/', component: Hero },
@@ -12,7 +13,8 @@ const routes = [
     { path: '/dogs', component: Dogs },
     { path: '/hamsters', component: Hamsters },
     { path: '/parrots', component: Parrots },
-    { path: '/contacts', component: ContactsPage }
+    { path: '/contacts', component: ContactsPage },
+    { path: '/about', component: AboutPage }
 ]
 
 const router = createRouter({

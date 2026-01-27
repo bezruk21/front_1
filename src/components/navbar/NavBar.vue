@@ -63,7 +63,9 @@ const openAuth = () => {
         <button class="btn btn-custom rounded-pill px-4" @click="$router.push('/contacts')">
           Контакти
         </button>
-        <button class="btn btn-custom rounded-pill px-4">Про нас</button>
+        <button class="btn btn-custom rounded-pill px-4" @click="$router.push('/about')">
+          Про нас
+        </button>
       </div>
 
       <div class="position-relative">
@@ -102,11 +104,14 @@ const openAuth = () => {
 
         <hr class="d-md-none my-3"> <button
           class="btn btn-outline-primary w-100 rounded-pill d-md-none"
-          @click="$router.push('/contacts'); menuOpen=false"
-      >
+          @click="$router.push('/contacts'); menuOpen=false">
         Контакти
       </button>
-        <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Про нас</button>
+        <button
+            class="btn btn-outline-primary w-100 rounded-pill d-md-none"
+            @click="$router.push('/about'); menuOpen=false">
+          Про нас
+        </button>
       </div>
     </div>
 
