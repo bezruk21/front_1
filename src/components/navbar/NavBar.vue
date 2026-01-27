@@ -99,8 +99,8 @@ const openAuth = () => {
       <div class="offcanvas-body d-flex flex-column gap-2">
         <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/cats'); menuOpen=false">🐱 Коти</a>
         <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/dogs'); menuOpen=false">🐶 Собаки</a>
-        <a class="nav-link fs-5 fw-bold text-dark" href="#">🐹 Хом'яки</a>
-        <a class="nav-link fs-5 fw-bold text-dark" href="#">🦜 Папугаї</a>
+        <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/hamsters'); menuOpen=false">🐹 Хом'яки</a>
+        <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/parrots'); menuOpen=false">🦜 Папугаї</a>
 
         <hr class="d-md-none my-3"> <button
           class="btn btn-outline-primary w-100 rounded-pill d-md-none"
