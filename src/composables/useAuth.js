@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 
+// Стан юзера поза функцією (Singleton) - це правильно
 const user = ref(null);
 
 export function useAuth() {
