@@ -1,17 +1,36 @@
 <script setup>
 import { ref } from 'vue';
+import { useFetch } from '@vueuse/core';
 import { useAuth } from '../../composables/useAuth';
 import AuthModal from '../auth/AuthModal.vue';
 import UserMenu from './UserMenu.vue';
 
-const { user } = useAuth();
+const { setUser, logout } = useAuth();
 
 const showUserMenu = ref(false);
 const showAuthModal = ref(false);
-const menuOpen = ref(false);
+const menuOpen = ref(false); // Відповідає за відкриття бокового меню
 
-const toggleUserMenu = () => {
-  // Просто перемикаємо видимість меню
+const toggleUserMenu = async () => {
+  if (!showUserMenu.value) {
+    const token = localStorage.getItem('access_token');
+
+    if (token) {
+      const { data, statusCode } = await useFetch('http://127.0.0.1:8000/users/me', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).json();
+
+      if (statusCode.value === 200 && data.value) {
+        setUser(data.value);
+      } else {
+        logout();
+      }
+    } else {
+      logout();
+    }
+  }
   showUserMenu.value = !showUserMenu.value;
 };
 
@@ -41,8 +60,12 @@ const openAuth = () => {
     <div class="d-flex align-items-center gap-3">
 
       <div class="d-none d-md-flex gap-2">
-        <button class="btn btn-custom rounded-pill px-4">Контакти</button>
-        <button class="btn btn-custom rounded-pill px-4">Про нас</button>
+        <button class="btn btn-custom rounded-pill px-4" @click="$router.push('/contacts')">
+          Контакти
+        </button>
+        <button class="btn btn-custom rounded-pill px-4" @click="$router.push('/about')">
+          Про нас
+        </button>
       </div>
 
       <div class="position-relative">
@@ -51,10 +74,9 @@ const openAuth = () => {
         </button>
 
         <div v-if="showUserMenu" class="user-dropdown-wrapper">
-          <div class="user-overlay-backdrop" @click="closeUserMenu"></div>
-          <div class="position-absolute end-0 mt-2" style="z-index: 1050; min-width: 200px;">
-            <UserMenu @login="openAuth" @close="closeUserMenu" />
-          </div>
+          <div class="user-overlay-backdrop" @click="closeUserMenu"></div> <div class="position-absolute end-0 mt-2" style="z-index: 1050; min-width: 200px;">
+          <UserMenu @login="openAuth" @close="closeUserMenu" />
+        </div>
         </div>
       </div>
     </div>
@@ -77,12 +99,19 @@ const openAuth = () => {
       <div class="offcanvas-body d-flex flex-column gap-2">
         <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/cats'); menuOpen=false">🐱 Коти</a>
         <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/dogs'); menuOpen=false">🐶 Собаки</a>
-        <a class="nav-link fs-5 fw-bold text-dark" href="#">🐹 Хом'яки</a>
-        <a class="nav-link fs-5 fw-bold text-dark" href="#">🦜 Папугаї</a>
+        <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/hamsters'); menuOpen=false">🐹 Хом'яки</a>
+        <a class="nav-link fs-5 fw-bold text-dark" @click="$router.push('/parrots'); menuOpen=false">🦜 Папугаї</a>
 
-        <hr class="d-md-none my-3">
-        <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Контакти</button>
-        <button class="btn btn-outline-primary w-100 rounded-pill d-md-none">Про нас</button>
+        <hr class="d-md-none my-3"> <button
+          class="btn btn-outline-primary w-100 rounded-pill d-md-none"
+          @click="$router.push('/contacts'); menuOpen=false">
+        Контакти
+      </button>
+        <button
+            class="btn btn-outline-primary w-100 rounded-pill d-md-none"
+            @click="$router.push('/about'); menuOpen=false">
+          Про нас
+        </button>
       </div>
     </div>
 
